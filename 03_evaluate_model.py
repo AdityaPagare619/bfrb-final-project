@@ -62,13 +62,15 @@ with torch.no_grad():
 
 # 1. Confusion Matrix
 cm = confusion_matrix(y_true, y_pred)
+classes = labels.cat.categories.tolist()
+n_classes = len(classes)
 cm_df = pd.DataFrame(cm, index=labels.cat.categories, columns=labels.cat.categories)
 cm_df.to_csv(EXPORT_DIR / "confusion_matrix.csv")
 
 plt.figure(figsize=(8,8))
 plt.imshow(cm, cmap="Blues", interpolation="nearest")
-plt.xticks(range(len(labels)), labels.cat.categories, rotation=90)
-plt.yticks(range(len(labels)), labels.cat.categories)
+plt.xticks(range(n_classes), classes, rotation=90)
+plt.yticks(range(n_classes), classes)
 plt.title("Confusion Matrix")
 plt.colorbar()
 plt.tight_layout()
